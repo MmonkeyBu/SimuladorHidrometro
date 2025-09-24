@@ -32,6 +32,6 @@ Aqui estão as imagens geradas a partir dos arquivos PlantUML no repositório:
 
 Legenda: Diagrama de classes com atributos privados e métodos públicos.
 
-![Flowchart do Simulador](./SimuladorHidrometroFlowchart.png)
+![Flowchart do Simulador](diagrama_flowchart.md)
 
 Legenda: Fluxo principal da aplicação (inicialização, loop do timer e ações do usuário).
