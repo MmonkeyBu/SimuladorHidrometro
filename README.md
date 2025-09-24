@@ -24,25 +24,6 @@ Exemplos de uso (PowerShell):
 # Gera PNG a partir do .puml
 .\render_diagrams.ps1 -PlantUmlJarPath "C:\path\to\plantuml.jar" -OutputFormat png
 ```
-
-- Usando Docker (se tiver Docker):
-
-```powershell
-.\render_diagrams.ps1 -UseDocker -OutputFormat svg
-```
-
-**Diagrama Mermaid (rápido)**
-
-Veja `diagrama_flowchart.md` para o diagrama em Mermaid (útil para visualização rápida no Markdown).
-
----
-
-Se quiser, eu posso:
-
-- Gerar as imagens (`png`/`svg`) automaticamente aqui se você permitir que eu rode comandos (posso tentar executar `java -jar plantuml.jar` se o `plantuml.jar` estiver disponível),
-- Inserir o diagrama renderizado no `README.md` como imagem (após gerar os arquivos PNG/SVG),
-- Ajustar o nível de detalhe dos diagramas (nomes de métodos, parâmetros, etc.).
-
 ## Diagramas renderizados
 
 Aqui estão as imagens geradas a partir dos arquivos PlantUML no repositório:
