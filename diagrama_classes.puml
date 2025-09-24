@@ -1,6 +1,4 @@
 @startuml SimuladorHidrometroClasses
-' Diagrama de classes formalizado para o projeto SimuladorHidrometro
-' Baseado nos arquivos: Main.java, Hidrometro.java, HidrometroController.java, ConfiguracaoView.java, HidrometroView.java
 
 skinparam classAttributeIconSize 0
 
