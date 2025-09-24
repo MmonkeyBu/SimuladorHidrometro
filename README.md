@@ -26,8 +26,6 @@ Exemplos de uso (PowerShell):
 ```
 ## Diagramas renderizados
 
-Aqui estão as imagens geradas a partir dos arquivos PlantUML no repositório:
-
 ![Diagrama de Classes](./SimuladorHidrometroClasses.png)
 
 Legenda: Diagrama de classes com atributos privados e métodos públicos.
