@@ -1,0 +1,39 @@
+@startuml SimuladorHidrometroFlowchart
+' Flowchart do simulador de hidrômetro
+' Baseado nos arquivos: Main.java, ConfiguracaoView.java, HidrometroController.java, Hidrometro.java, HidrometroView.java
+
+skinparam handwritten true
+
+start
+:Inicia aplicação (Main);
+partition MainThread {
+  :Criar Hidrometro (modelo);
+  :Criar ConfiguracaoView (janela de configuração);
+  :Criar HidrometroView (janela principal);
+  :Criar HidrometroController (controller);
+  :Registrar listeners nos botões;
+  :Exibir ConfiguracaoView;
+}
+if (Usuario clica em "Iniciar Simulação"?) then (Sim)
+  :Ler vazao inicial de ConfiguracaoView;
+  :Setar vazao no modelo;
+  :Fechar ConfiguracaoView;
+  :Exibir HidrometroView;
+  :Iniciar Timer (loop a cada 1s);
+  while (Timer ativo?) is (sim)
+    :modelo.atualizarConsumo();
+    :Controller atualiza HidrometroView com novo consumo;
+    if (Usuario clica em Aumentar?) then (Sim)
+      :Controller ajusta vazao (+0.1);
+    else if (Usuario clica em Diminuir?) then (Sim)
+      :Controller ajusta vazao (-0.1);
+    else if (Usuario clica em Resetar?) then (Sim)
+      :Controller reseta modelo (consumo = 0, vazao = 0);
+    endif
+  endwhile
+else (Nao)
+  stop
+endif
+
+stop
+@enduml

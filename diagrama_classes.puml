@@ -1,0 +1,70 @@
+@startuml SimuladorHidrometroClasses
+' Diagrama de classes formalizado para o projeto SimuladorHidrometro
+' Baseado nos arquivos: Main.java, Hidrometro.java, HidrometroController.java, ConfiguracaoView.java, HidrometroView.java
+
+skinparam classAttributeIconSize 0
+
+class Main {
+  +main(String[] args) : void
+}
+
+class Hidrometro {
+  -consumo: double
+  -vazao: double
+  +Hidrometro()
+  +setVazao(vazao: double) : void
+  +getVazao(): double
+  +getConsumo(): double
+  +atualizarConsumo(): void
+  +resetar(): void
+}
+
+class ConfiguracaoView {
+  -frame: javax.swing.JFrame
+  -campoVazao: javax.swing.JFormattedTextField
+  -botaoIniciar: javax.swing.JButton
+  +ConfiguracaoView()
+  +exibir(): void
+  +getVazaoInicial(): double
+  +addIniciarListener(listener): void
+}
+
+class HidrometroView {
+  -frame: javax.swing.JFrame
+  -painelHidrometro: javax.swing.JPanel
+  -labelConsumo: javax.swing.JLabel
+  -botaoAumentar: javax.swing.JButton
+  -botaoDiminuir: javax.swing.JButton
+  -botaoReset: javax.swing.JButton
+  +HidrometroView()
+  +exibir(): void
+  +atualizarConsumo(consumo: double): void
+  +addAumentarListener(listener): void
+  +addDiminuirListener(listener): void
+  +addResetListener(listener): void
+}
+
+class HidrometroController {
+  -modelo: Hidrometro
+  -viewConfig: ConfiguracaoView
+  -viewPrincipal: HidrometroView
+  -timerDaSimulacao: javax.swing.Timer
+  +HidrometroController(modelo: Hidrometro, viewConfig: ConfiguracaoView, viewPrincipal: HidrometroView)
+  +iniciar(): void
+  -iniciarSimulacao(): void
+  -ajustarVazao(delta: double): void
+  -resetarConsumo(): void
+}
+
+Main --> HidrometroController : cria
+Main --> ConfiguracaoView : cria
+Main --> HidrometroView : cria
+
+HidrometroController "1" o-- "1" Hidrometro : possui
+HidrometroController "1" o-- "1" ConfiguracaoView : controla
+HidrometroController "1" o-- "1" HidrometroView : controla
+
+ConfiguracaoView --> HidrometroController : listener(iniciar)
+HidrometroView --> HidrometroController : listeners(aumentar, diminuir, reset)
+
+@enduml
