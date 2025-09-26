@@ -1,8 +1,5 @@
 package simuladorhidrometro;
-<<<<<<< HEAD
-=======
 
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
 import javax.swing.Timer;
 
 public class HidrometroController {
@@ -11,18 +8,23 @@ public class HidrometroController {
     private HidrometroView viewPrincipal;
     private Timer timerDaSimulacao;
 
-     public HidrometroController(Hidrometro modelo, ConfiguracaoView viewConfig, HidrometroView viewPrincipal) {
+    public HidrometroController(Hidrometro modelo, ConfiguracaoView viewConfig, HidrometroView viewPrincipal) {
         this.modelo = modelo;
         this.viewConfig = viewConfig;
         this.viewPrincipal = viewPrincipal;
+
+        // Garante que o timer seja parado quando a janela principal da simulação fechar
+        viewPrincipal.getJanela().addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                if (timerDaSimulacao != null) {
+                    timerDaSimulacao.stop();
+                }
+            }
+        });
     }
 
-
     public void iniciar() {
-<<<<<<< HEAD
-
-=======
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
         viewConfig.getBotaoIniciar().addActionListener(e -> iniciarSimulacao());
         viewPrincipal.getBotaoAumentar().addActionListener(e -> ajustarVazao(0.1));
         viewPrincipal.getBotaoDiminuir().addActionListener(e -> ajustarVazao(-0.1));
@@ -30,77 +32,40 @@ public class HidrometroController {
     }
 
     private void iniciarSimulacao() {
-
         double vazaoInicial = viewConfig.getVazaoInicial();
-<<<<<<< HEAD
-=======
-
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
         modelo.setVazao(vazaoInicial);
         atualizarViewPrincipal();
         viewConfig.fechar();
         viewPrincipal.exibir();
-<<<<<<< HEAD
         iniciarTimer();
     }
 
-=======
-
-        iniciarTimer();
-    }
-    
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
     private void ajustarVazao(double delta) {
         double vazaoAtual = modelo.getVazao();
-        modelo.setVazao(vazaoAtual + delta);
+        // Adiciona uma verificação para não permitir vazão negativa
+        if (vazaoAtual + delta >= 0) {
+            modelo.setVazao(vazaoAtual + delta);
+        }
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
 
     private void resetarConsumo() {
         modelo.resetar();
         atualizarViewPrincipal();
     }
-    
-<<<<<<< HEAD
-
-    private void iniciarTimer() {
-         
-        timerDaSimulacao = new Timer(1000, e -> passoDaSimulacao());
-        timerDaSimulacao.start(); 
-    }
-              
-    private void passoDaSimulacao() {
-
-        modelo.atualizarConsumo();
-
-        atualizarViewPrincipal();
-    }
-    
-    private void atualizarViewPrincipal() {
-
-        double consumo = modelo.getConsumo();
-
-        viewPrincipal.setConsumo(consumo);
-
-=======
 
     private void iniciarTimer() {
         timerDaSimulacao = new Timer(1000, e -> passoDaSimulacao());
-        timerDaSimulacao.start(); // Inicia o timer
+        timerDaSimulacao.start();
     }
 
     private void passoDaSimulacao() {
         modelo.atualizarConsumo();
         atualizarViewPrincipal();
     }
-           
+
     private void atualizarViewPrincipal() {
         double consumo = modelo.getConsumo();
         viewPrincipal.setConsumo(consumo);
->>>>>>> cad04a9ede1b391e2f2c4559ed301a861bfe3c10
         viewPrincipal.atualizarDisplay();
-    } 
+    }
 }

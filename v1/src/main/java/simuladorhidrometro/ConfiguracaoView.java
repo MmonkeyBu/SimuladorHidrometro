@@ -5,29 +5,29 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField; 
+import javax.swing.JTextField;
 
 public class ConfiguracaoView {
     private JFrame janela;
     private JTextField campoVazao;
     private JButton botaoIniciar;
-    
-    public ConfiguracaoView(){
-        janela = new JFrame("Configuração do Hidrômetro");
+
+    // Construtor modificado para aceitar um ID
+    public ConfiguracaoView(int id){
+        janela = new JFrame("Configuração #" + id);
         janela.setSize(300, 150);
         janela.setLayout(new FlowLayout());
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        JLabel rotuloVazao = new JLabel("Vazão (m³/h):");
-        campoVazao = new JTextField(10);
-        
+        // Alterado para DISPOSE_ON_CLOSE para não fechar a aplicação inteira
+        janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JLabel rotuloVazao = new JLabel("Vazão Inicial (m³/s):");
+        campoVazao = new JTextField("0.5", 10);
+
         botaoIniciar = new JButton("Iniciar Simulação");
-        
+
         janela.add(rotuloVazao);
         janela.add(campoVazao);
         janela.add(botaoIniciar);
-        
-        janela.setVisible(true);
     }
 
     public void exibir(){
@@ -53,4 +53,3 @@ public class ConfiguracaoView {
         janela.dispose();
     }
 }
-

@@ -25,9 +25,10 @@ public class HidrometroView {
     private PainelHidrometro painelPrincipal;
     private double consumoAtual = 0.0;
 
-    public HidrometroView() {
+    // Construtor modificado para aceitar um ID
+    public HidrometroView(int id) {
         carregarImagemDeFundo();
-        inicializarComponentes();
+        inicializarComponentes(id); // Passa o ID para a inicialização
     }
 
     private void carregarImagemDeFundo() {
@@ -43,9 +44,11 @@ public class HidrometroView {
         }
     }
 
-    private void inicializarComponentes() {
-        janela = new JFrame("Simulador de Hidrometro");
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // Método modificado para usar o ID no título da janela
+    private void inicializarComponentes(int id) {
+        janela = new JFrame("Simulador de Hidrômetro #" + id);
+        // Alterado para DISPOSE_ON_CLOSE para não fechar a aplicação inteira
+        janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         janela.setLayout(new BorderLayout());
 
         painelPrincipal = new PainelHidrometro();
@@ -53,7 +56,7 @@ public class HidrometroView {
         botaoAumentar = new JButton("Aumentar Vazao (+0.1 L/s)");
         botaoDiminuir = new JButton("Diminuir Vazao (-0.1 L/s)");
         botaoResetar = new JButton("Resetar Consumo");
-        
+
         JPanel painelDeBotoes = new JPanel();
         painelDeBotoes.add(botaoDiminuir);
         painelDeBotoes.add(botaoResetar);
@@ -73,9 +76,14 @@ public class HidrometroView {
     public void atualizarDisplay() {
         painelPrincipal.repaint();
     }
-    
+
     public void setConsumo(double novoConsumo) {
         this.consumoAtual = novoConsumo;
+    }
+
+    // Método para permitir acesso à janela (necessário para o WindowListener)
+    public JFrame getJanela() {
+        return janela;
     }
 
     public JButton getBotaoAumentar() { return botaoAumentar; }
@@ -83,8 +91,9 @@ public class HidrometroView {
     public JButton getBotaoResetar() { return botaoResetar; }
 
     private class PainelHidrometro extends JPanel {
+        // ... O restante da classe PainelHidrometro permanece inalterado ...
         public PainelHidrometro() {
-            this.setPreferredSize(new Dimension(600, 450)); 
+            this.setPreferredSize(new Dimension(600, 450));
         }
 
         private void desenharPonteiro(Graphics2D g2d, double valor, int centroX, int centroY, int raio) {
@@ -104,17 +113,17 @@ public class HidrometroView {
             if (imagemFundo != null) {
                 int painelLargura = this.getWidth();
                 int painelAltura = this.getHeight();
-                
+
                 int imgOrigLargura = imagemFundo.getWidth(this);
                 int imgOrigAltura = imagemFundo.getHeight(this);
-                
+
                 if (imgOrigLargura <= 0 || imgOrigAltura <= 0) {
                     System.err.println("Erro: Dimensoes da imagem de fundo sao invalidas (0 ou menos).");
                     return;
                 }
 
                 double fatorEscala = Math.min((double) painelLargura / imgOrigLargura, (double) painelAltura / imgOrigAltura);
-                
+
                 int imgEscaladaLargura = (int) (imgOrigLargura * fatorEscala);
                 int imgEscaladaAltura = (int) (imgOrigAltura * fatorEscala);
                 int imgX = (painelLargura - imgEscaladaLargura) / 2;
@@ -122,10 +131,9 @@ public class HidrometroView {
 
                 g2d.drawImage(imagemFundo, imgX, imgY, imgEscaladaLargura, imgEscaladaAltura, this);
 
-                // Desenhar Texto Digital
                 g2d.setFont(new Font("Monospaced", Font.BOLD, (int)(45 * fatorEscala)));
                 String numeroFormatado = String.format("%08.2f", consumoAtual);
-                
+
                 String parteInteira;
                 String parteDecimal;
 
@@ -141,19 +149,19 @@ public class HidrometroView {
                     parteInteira = numeroFormatado;
                     parteDecimal = "";
                 }
-                
+
                 FontMetrics fm = g2d.getFontMetrics();
                 int larguraParteInteira = fm.stringWidth(parteInteira);
                 int larguraNumeroFormatado = fm.stringWidth(numeroFormatado);
                 String unidadeMedida = " m³";
                 int larguraUnidade = fm.stringWidth(unidadeMedida);
 
-                int offsetTextoXOriginal = 640; 
-                int offsetTextoYOriginal = 380; 
+                int offsetTextoXOriginal = 640;
+                int offsetTextoYOriginal = 380;
 
                 int xTextoInicio = imgX + (int)(offsetTextoXOriginal * fatorEscala) - ((larguraNumeroFormatado + larguraUnidade) / 2);
                 int yTextoBase = imgY + (int)(offsetTextoYOriginal * fatorEscala);
-                
+
                 g2d.setColor(Color.BLACK);
                 g2d.drawString(parteInteira, xTextoInicio, yTextoBase);
                 g2d.setColor(Color.RED);
@@ -161,26 +169,26 @@ public class HidrometroView {
                 g2d.setColor(Color.BLACK);
                 g2d.drawString(unidadeMedida, xTextoInicio + larguraNumeroFormatado, yTextoBase);
 
-                double valorCentenasLitros = (consumoAtual * 10) % 10;     
-                double valorDezenasLitros = (consumoAtual * 100) % 10;    
+                double valorCentenasLitros = (consumoAtual * 10) % 10;
+                double valorDezenasLitros = (consumoAtual * 100) % 10;
 
-                int centroX_01_orig = 595; 
-                int centroY_01_orig = 583; 
-                int raio_01_orig = 30;     
+                int centroX_01_orig = 595;
+                int centroY_01_orig = 583;
+                int raio_01_orig = 30;
 
-                int centroX_001_orig = 725; 
-                int centroY_001_orig = 515; 
-                int raio_001_orig = 30;     
+                int centroX_001_orig = 725;
+                int centroY_001_orig = 515;
+                int raio_001_orig = 30;
 
-                desenharPonteiro(g2d, valorCentenasLitros, 
-                                 imgX + (int)(centroX_01_orig * fatorEscala), 
-                                 imgY + (int)(centroY_01_orig * fatorEscala), 
-                                 (int)(raio_01_orig * fatorEscala));
+                desenharPonteiro(g2d, valorCentenasLitros,
+                        imgX + (int)(centroX_01_orig * fatorEscala),
+                        imgY + (int)(centroY_01_orig * fatorEscala),
+                        (int)(raio_01_orig * fatorEscala));
 
-                desenharPonteiro(g2d, valorDezenasLitros, 
-                                 imgX + (int)(centroX_001_orig * fatorEscala), 
-                                 imgY + (int)(centroY_001_orig * fatorEscala), 
-                                 (int)(raio_001_orig * fatorEscala));
+                desenharPonteiro(g2d, valorDezenasLitros,
+                        imgX + (int)(centroX_001_orig * fatorEscala),
+                        imgY + (int)(centroY_001_orig * fatorEscala),
+                        (int)(raio_001_orig * fatorEscala));
             }
         }
     }
